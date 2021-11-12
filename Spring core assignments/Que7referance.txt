@@ -1,0 +1,96 @@
+package com.spring;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component("orderDetails")
+public class Oredr {
+
+	@Value("Mobile")
+	private String itemName;
+	@Value("20000")
+	private String price;
+	@Value("Solapur")
+	private String adreess;
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public String getAdreess() {
+		return adreess;
+	}
+	public void setAdreess(String adreess) {
+		this.adreess = adreess;
+	}
+	
+	
+}
+
+package com.spring;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component("paymentprocess")
+public class Paymentprocess {
+	
+	
+	@Value("#{OrderDetails}")
+	private Oredr order;
+
+	public Oredr getOrder() {
+		return order;
+	}
+
+	public void setOrder(Oredr order) {
+		this.order = order;
+	}
+	
+	public void Display() {
+		
+		System.out.println(order.getPrice()+""+order.getItemName()+""+order.getAdreess());
+	}
+	
+	
+
+}
+
+package com.spring.config;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages="com.spring.*")
+public class AppConfig {
+
+}
+
+package com.spring;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.spring.config.AppConfig;
+
+public class MainClass {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		ApplicationContext contests = new AnnotationConfigApplicationContext(AppConfig.class);
+		
+		Paymentprocess obj = (Paymentprocess) contests.getBean("paymentprocess");
+		obj.Display();
+	}
+
+}

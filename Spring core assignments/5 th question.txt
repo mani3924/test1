@@ -1,0 +1,161 @@
+Inject Demo:
+
+1.A simple POJO class as Employee having Address POJO reference variable injected :
+
+package Sriram;
+import javax.inject.Inject;
+
+//Create a POJO class Employee which has a 
+//Address Object reference as instance variable
+publicclass Employee {
+
+private String name;
+privateintage;
+
+@Inject
+private Address address;
+
+public Employee() {
+
+}
+
+public String getName() {
+returnname;
+}
+
+publicvoid setName(String name) {
+this.name = name;
+}
+
+publicint getAge() {
+returnage;
+}
+
+publicvoid setAge(intage) {
+this.age = age;
+}
+
+public Address getAddress() {
+returnaddress;
+}
+
+publicvoid setAddress(Address address) {
+this.address = address;
+}
+
+}
+2.Address POJO as Injected into Employee
+
+package Sriram;
+publicclass Address {
+
+	private String street;
+	private String city;
+	private String state;
+
+	public Address() {
+
+	 }
+
+
+	public String getStreet() {
+	returnstreet;
+	 }
+
+
+	publicvoid setStreet(String street) {
+	this.street = street;
+	 }
+
+
+	public String getCity() {
+	returncity;
+	 }
+
+
+	publicvoid setCity(String city) {
+	this.city = city;
+	 }
+
+
+	public String getState() {
+	returnstate;
+	 }
+
+
+	publicvoid setState(String state) {
+	this.state = state;
+	 }
+
+	}
+3.Test class for testing the application :
+package Sriram;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+publicclass Test {
+
+publicstaticvoid main(String[] args) {
+
+// ApplicationContext is a Spring interface which  provides with the configuration for an application. 
+// It provides us with all the methods that BeanFactory provides. It loads the file resources in a older 
+	//and generic manner. 
+// We are using concrete implementation of ApplicationContext
+// here called as ClassPathXmlApplicationContext because this 
+// bean factory reads the xml file placed in the classpath of 
+// our application. We provide ClassPathXmlApplicationContext
+// with a configuration file called as inject.xml placed
+// at classpath of our application. 
+  ApplicationContext context =  new ClassPathXmlApplicationContext(("inject.xml"));
+
+// In order to get a object instantiated for a particular bean 
+// we call getBean() method of ClassPathXmlApplicationContext
+// passing it the id for which the object is to be needed. 
+// Here getBean() returns an Object. We need to cast it back 
+// to the Employee object. Without implementing new keyword we 
+// have injected object of Employee just by reading an xml
+// configuration file.
+  Employee employee = (Employee)context.getBean("employee");
+
+if(employee.getAddress()==null){
+   System.out.println("The Employee Name : " + employee.getName());
+   System.out.println("The Employee Age : " + employee.getAge());
+   System.out.println("The Employee Address : " + "is not provided");
+  }
+else{
+   System.out.println("The Employee Name : " + employee.getName());
+   System.out.println("The Employee Age : " + employee.getAge());
+   System.out.println("The Employee Address : " +   
+employee.getAddress().getStreet() + " " +
+employee.getAddress().getCity() + " " +
+employee.getAddress().getState());
+  }
+ }
+4.Spring configuration file for the @Inject annotation :
+<?xmlversion="1.0"encoding="UTF-8"?>
+<beansxmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+
+<beanid="employee"class="Sriram.Employee">
+
+<propertyname="age"value="22"/>
+<propertyname="name"value="manikanta"/>
+
+
+</bean>
+
+<beanid="address"class="Sriram.Address">
+
+<propertyname="street"value="Puneeth Street"/>
+<propertyname="city"value="Bang"/>
+<propertyname="state"value="Kar"></property>
+</bean>
+
+</beans>
+

@@ -1,0 +1,140 @@
+
+Question 4: Annotations:::
+
+Example on @service:
+
+// Content:  @Service annotation is used with classes that provide some business functionalities.It can be applied only to class. The spring context will autodelete these class 
+when annotation-based configuration and classpath scanning is used. 
+
+// Annotation based configuration is used here. 
+
+     // pom.xml dependency to add:
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-context</artifactId>
+	<version>5.0.6.RELEASE</version>
+</dependency>
+
+
+   //Create a service class:
+
+package springCoreTest;
+
+import org.springframework.stereotype.Service;
+
+@Service("sri")
+public class MathService {
+	
+		public int add(int x, int y) {
+			return x + y;
+		}
+		
+		public int subtract(int x, int y) {
+			return x - y;
+		}
+	}
+
+     //Create a Main class:
+
+package SpringAnnotations;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+
+public class SpringService {
+
+
+	public static void main(String[] args) {
+		
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		((AnnotationConfigApplicationContext) context).scan("SpringAnnotations");
+		((AbstractApplicationContext) context).refresh();
+
+	 MathService sri = context.getBean(MathService.class);
+
+		int add = sri.add(7, 2);
+		System.out.println("Addition = " + add);
+
+		int subtract = sri.subtract(10, 2);
+		System.out.println("Subtraction = " + subtract);
+		
+		context.close();
+	}
+
+output:
+
+Addition = 9
+Subtraction = 8
+
+Question 4:
+
+Example on @Configuration:
+
+//Content:  This annotation indicates that a class declares one or more @Bean methods and may be processed by the Spring container to generate bean definitions 
+and service requests for those beans at runtime.
+
+ // pom.xml dependency to add:
+
+ <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>5.3.9</version>
+</dependency>
+
+//Create a class to config:
+
+package ConfigAnnotation;
+
+public class KiaCar {
+
+
+	public void config() {
+
+       System.out.println("KIA999, Black-Colour, 99L capacity");
+		
+}
+}
+    
+//Create a Main class:
+package ConfigAnnotation;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Apps {
+	public static void main( String[] args )
+    {
+        ApplicationContext factory= new AnnotationConfigApplicationContext(KiaCar.class);
+        
+        KiaCar sri= factory.getBean(KiaCar.class);
+        sri.config();
+    }
+
+}
+
+// Create a Config class: 
+
+package com.SpringAnno.ConfigAnno;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class Kiaaa {
+
+	@Bean
+	public KiaCar getCar() {
+		return new KiaCar();
+	}
+	}
+
+Output:
+KIA999, Black-Colour, 99L capacity
+
+
+
+
+
+
